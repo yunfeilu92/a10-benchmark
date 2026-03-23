@@ -1,0 +1,6 @@
+*.pem
+*.key
+CLAUDE.md
+__pycache__/
+*.log
+*.pyc
