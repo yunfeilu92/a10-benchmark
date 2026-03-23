@@ -3,11 +3,14 @@ set -ex
 
 source /home/ubuntu/pluto-env/bin/activate
 
-# Fix numpy version - need 1.24.x for compatibility with shapely/scipy/torch
-pip install "numpy==1.24.4"
+# Step 1: Force numpy downgrade - must use --no-deps to prevent reinstall
+pip uninstall numpy -y
+pip install "numpy==1.24.4" --no-deps
+python -c "import numpy; print(f'numpy={numpy.__version__}')"
 
-# Reinstall shapely against correct numpy
-pip install "shapely==2.0.1" --force-reinstall
+# Step 2: Reinstall shapely built against numpy 1.x
+pip uninstall shapely -y
+pip install "shapely==2.0.1" --no-binary :all:
 
 # Verify all imports work
 python -c "
